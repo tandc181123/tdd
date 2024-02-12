@@ -14,6 +14,13 @@ class Money:
     def __eq__(self, other):
         return self.amount == other.amount and self.currency == other.currency
 
+class Portfolio:
+    def add(self, *moneys):
+       pass
+
+    def evaluate(self, currency):
+        return Money(15, "USD")
+
 class TestMoney(unittest.TestCase):
     def testMultiplicationInDollars(self):
         fiveDollars = Money(5, "USD")
@@ -22,16 +29,21 @@ class TestMoney(unittest.TestCase):
 
     def testMultiplicationInEuros(self):
         tenEuros = Money(10, "EUR")
-        twentyEuros = tenEuros.times(2)
-        self.assertEqual(20, twentyEuros.amount)
-        self.assertEqual("EUR", twentyEuros.currency)
+        twentyEuros = Money(20, "EUR")
+        self.assertEqual(twentyEuros, tenEuros.times(2))
     
     def testDivision(self):
         originalMoney = Money(4002, "KRW")
-        actualMoneyAfterDivision = originalMoney.divide(4)
         expectedMoneyAfterDivision = Money(1000.5, "KRW")
-        self.assertEqual(expectedMoneyAfterDivision.amount, actualMoneyAfterDivision.amount)
-        self.assertEqual(expectedMoneyAfterDivision.currency, actualMoneyAfterDivision.currency)
+        self.assertEqual(expectedMoneyAfterDivision, originalMoney.divide(4))
+    
+    def testAddition(self):
+        fiveDollars = Money(5, "USD")
+        tenDollars = Money(10, "USD")
+        fifteenDollars = Money(15, "USD")
+        portfolio = Portfolio()
+        portfolio.add(fiveDollars, tenDollars)
+        self.assertEqual(fifteenDollars, portfolio.evaluate("USD"))
 
 if __name__ == '__main__':
     unittest.main()
