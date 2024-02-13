@@ -1,4 +1,6 @@
 import unittest
+import functools
+import operator
 
 class Money:
     def __init__(self, amount, currency):
@@ -15,11 +17,14 @@ class Money:
         return self.amount == other.amount and self.currency == other.currency
 
 class Portfolio:
+    def __init__(self):
+        self.moneys = []
     def add(self, *moneys):
-       pass
+       self.moneys.extend(moneys)
 
     def evaluate(self, currency):
-        return Money(15, "USD")
+        total = functools.reduce(operator.add, map(lambda m: m.amount, self.moneys), 0)
+        return Money(total, currency)
 
 class TestMoney(unittest.TestCase):
     def testMultiplicationInDollars(self):
